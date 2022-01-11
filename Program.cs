@@ -14,11 +14,11 @@ namespace RestCSharp
 
         static void login(ClimbingClient client)
         {
-            Console.Write("Logga in: ");
+            Console.Write("Log in ");
             Console.CursorVisible = true;
-            Console.Write("Användarnamn: ");
+            Console.Write("Username:");
             string username = Console.ReadLine();
-            Console.Write("Lösenord: ");
+            Console.Write("Password: ");
             string password = Console.ReadLine();
             client.Login(username, password);
             Console.WriteLine("Login successful");
@@ -26,21 +26,21 @@ namespace RestCSharp
 
         static void register(ClimbingClient client)
         {
-            Console.Write("Registrera dig");
+            Console.Write("Register");
             Console.CursorVisible = true;
-            Console.Write("Ange ditt namn: ");
+            Console.Write("Full name: ");
             string fullname = Console.ReadLine();
-            Console.Write("Ange användarnamn: ");
+            Console.Write("Username: ");
             string username = Console.ReadLine();
-            Console.Write("Ange lösenord: ");
+            Console.Write("Password: ");
             string password = Console.ReadLine();
         }
 
-        static void getRoutes(ClimbingClient client)
+        static async Task getRoutes(ClimbingClient client)
         {
-            var routesTask = client.getRoutes();
-            routesTask.Wait();
-            foreach (ClimbingRoute route in routesTask.Result)
+            var routes = await client.getRoutes();
+
+            foreach (ClimbingRoute route in routes)
             {
                 Console.WriteLine($"Route name: {route.name}");
             }
@@ -53,9 +53,11 @@ namespace RestCSharp
             {
                 Console.WriteLine("MyLog\n\n");
 
-                Console.WriteLine("1. Logga in\n");
-                Console.WriteLine("2. Registrera användare\n");
-                Console.WriteLine("3. Hämta rutter\n");
+                Console.WriteLine("1. Log in\n");
+                Console.WriteLine("2. Register a new user\n");
+                Console.WriteLine("3. Get climbing loggs\n");
+                Console.WriteLine("4. Add a new climbing log\n");
+
                 Console.WriteLine("X. Avsluta\n");
 
                 string inp = Console.ReadLine().ToLower();
@@ -69,7 +71,10 @@ namespace RestCSharp
                         register(client);
                         break;
                     case "3":
-                        getRoutes(client);
+                        getRoutes(client).Wait();
+                        break;
+                    case "4":
+                        getRoutes(client).Wait();
                         break;
                     case "x":
                         Environment.Exit(0);
