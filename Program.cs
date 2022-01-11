@@ -7,62 +7,79 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
-
-
-
 namespace RestCSharp
 {
     public class Program
     {
+
+        static void login(ClimbingClient client)
+        {
+            Console.Write("Logga in: ");
+            Console.CursorVisible = true;
+            Console.Write("Användarnamn: ");
+            string username = Console.ReadLine();
+            Console.Write("Lösenord: ");
+            string password = Console.ReadLine();
+            client.Login(username, password);
+            Console.WriteLine("Login successful");
+        }
+
+        static void register(ClimbingClient client)
+        {
+            Console.Write("Registrera dig");
+            Console.CursorVisible = true;
+            Console.Write("Ange ditt namn: ");
+            string fullname = Console.ReadLine();
+            Console.Write("Ange användarnamn: ");
+            string username = Console.ReadLine();
+            Console.Write("Ange lösenord: ");
+            string password = Console.ReadLine();
+        }
+
+        static void getRoutes(ClimbingClient client)
+        {
+            var routesTask = client.getRoutes();
+            routesTask.Wait();
+            foreach (ClimbingRoute route in routesTask.Result)
+            {
+                Console.WriteLine($"Route name: {route.name}");
+            }
+        }
+
         static void Main(string[] args)
         {
-            RunAsync().Wait();
-        }
-        //Creating an async funtion so that the call will not be blocked, but instad wait to return the next line of code when the next request happens. 
-        static async Task RunAsync()
-        {
-            using(var client= new HttpClient())
+            var client = new ClimbingClient();
+            while (true)
             {
-                client.BaseAddress = new Uri("http://localhost:3001/");
-                client.DefaultRequestHeaders.Accept.Clear();
-                //Tells that we want to return in json format. 
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                Console.WriteLine("MyLog\n\n");
 
-                //Get data
-                Console.WriteLine("GET users");
-                //Asyncronros call
-                HttpResponseMessage response = await client.GetAsync("auth/user");
-                if (response.IsSuccessStatusCode)
+                Console.WriteLine("1. Logga in\n");
+                Console.WriteLine("2. Registrera användare\n");
+                Console.WriteLine("3. Hämta rutter\n");
+                Console.WriteLine("X. Avsluta\n");
+
+                string inp = Console.ReadLine().ToLower();
+
+                switch (inp)
                 {
-                    var jsonResponse = response.Content.ReadAsStringAsync();
-                    jsonResponse.Wait();
-                    Console.WriteLine((string)jsonResponse.Result);
-                    List<User> users = JsonSerializer.Deserialize<List<User>>((string)jsonResponse.Result);
-                    foreach(User user in users){
-                        Console.WriteLine(user.userName);
-                    }
+                    case "1":
+                        login(client);
+                        break;
+                    case "2":
+                        register(client);
+                        break;
+                    case "3":
+                        getRoutes(client);
+                        break;
+                    case "x":
+                        Environment.Exit(0);
+                        break;
                 }
-                var loginRequest = new LoginRequest();
-                loginRequest.userName = "asaberglund";
-                loginRequest.password = "asaberglund";
-                HttpResponseMessage loginResponse = await client.PostAsJsonAsync("auth/login", loginRequest);
-                var authToken = "";
-                if (loginResponse.IsSuccessStatusCode)
-                {
-                    authToken = loginResponse.Headers.GetValues("auth-token").FirstOrDefault();
-                    Console.WriteLine($"Auth token: {authToken}");
-                }
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
-                HttpResponseMessage routeResponse = await client.GetAsync("api/");
-                Console.WriteLine(routeResponse.StatusCode);
-                var routeResponseJson = routeResponse.Content.ReadAsStringAsync();
-                routeResponseJson.Wait();
-                Console.WriteLine(routeResponseJson.Result);
-                List<ClimbinRoute> climbinRoutes = JsonSerializer.Deserialize<List<ClimbinRoute>>((string)routeResponseJson.Result);
-                foreach(ClimbinRoute climbinRoute in climbinRoutes){
-                    Console.WriteLine($"grade: {climbinRoute.grade}, name:: {climbinRoute.name}");
-                }
+
             }
         }
     }
 }
+
+
+

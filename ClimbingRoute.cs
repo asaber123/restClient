@@ -1,7 +1,7 @@
 using System;
 namespace RestCSharp
 {
-    public class ClimbinRoute
+    public class ClimbingRoute
     {
         public String grade { get; set; }
         public String name { get; set; }
