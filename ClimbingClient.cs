@@ -22,7 +22,8 @@ namespace RestCSharp
 
         public async Task<List<ClimbingRoute>> getRoutes()
         {
-            if (httpClient.DefaultRequestHeaders.Authorization == null){
+            if (httpClient.DefaultRequestHeaders.Authorization == null)
+            {
                 Console.WriteLine("User is not logged in");
                 return new List<ClimbingRoute>();
             }
@@ -49,6 +50,14 @@ namespace RestCSharp
             {
                 throw new Exception("Failed to login");
             }
+        }
+        public async void Register(String fullname, String username, String password)
+        {
+            var registerRequest = new RegisterRequest();
+            registerRequest.fullName = fullname;
+            registerRequest.userName = username;
+            registerRequest.password = password;
+            HttpResponseMessage registerResponse = await httpClient.PostAsJsonAsync("auth/signup", registerRequest);
         }
     }
 

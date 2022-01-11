@@ -34,16 +34,25 @@ namespace RestCSharp
             string username = Console.ReadLine();
             Console.Write("Password: ");
             string password = Console.ReadLine();
+            client.Register(fullname, username, password);
+            Console.WriteLine("Register successful");
         }
 
         static async Task getRoutes(ClimbingClient client)
         {
             var routes = await client.getRoutes();
-
-            foreach (ClimbingRoute route in routes)
+            if (routes.Count == 0)
             {
-                Console.WriteLine($"Route name: {route.name}");
+                Console.WriteLine("There is no loggs to get");
             }
+            else
+            {
+                foreach (ClimbingRoute route in routes)
+                {
+                    Console.WriteLine($"Route name: {route.name}");
+                }
+            }
+
         }
 
         static void Main(string[] args)
