@@ -12,6 +12,10 @@ namespace RestCSharp
     public class Program
     {
 
+        static Boolean isLoggedIn(ClimbingClient client)
+        {
+            return client.CheckIfUserIsLoggedIn();
+        }
 
         static async Task login(ClimbingClient client)
         {
@@ -37,10 +41,6 @@ namespace RestCSharp
             string password = Console.ReadLine();
             client.Register(fullname, username, password);
             Console.WriteLine("Register successful");
-        }
-        static Boolean isLoggedIn(ClimbingClient client)
-        {
-            return client.CheckIfUserIsLoggedIn();
         }
         static void logout(ClimbingClient client)
         {
@@ -107,19 +107,22 @@ namespace RestCSharp
                 {
                     Console.WriteLine("MyLog\n\n");
                     Console.WriteLine("1. Log in\n");
-                    Console.WriteLine("2. Registrera\n");
-                    Console.WriteLine("X. Avsluta\n");
+                    Console.WriteLine("2. Register\n");
+                    Console.WriteLine("X. Exit\n");
                     string inp = Console.ReadLine().ToLower();
 
                     switch (inp)
                     {
                         case "1":
+                            Console.CursorVisible = true;
                             login(client).Wait();
                             break;
                         case "2":
+                            Console.CursorVisible = true;
                             register(client);
                             break;
                         case "x":
+                            Console.CursorVisible = true;
                             Environment.Exit(0);
                             break;
                     }
@@ -132,25 +135,35 @@ namespace RestCSharp
                     Console.WriteLine("2. Get climbing loggs\n");
                     Console.WriteLine("3. Add a new climbing log\n");
                     Console.WriteLine("4. Delete climbing log\n");
-                    Console.WriteLine("X. Avsluta\n");
+                    Console.WriteLine("X. Exit\n");
 
                     string inp = Console.ReadLine().ToLower();
 
                     switch (inp)
                     {
                         case "1":
+                            Console.CursorVisible = true;
+
                             logout(client);
                             break;
                         case "2":
+                            Console.CursorVisible = true;
+
                             getLoggs(client).Wait();
                             break;
                         case "3":
+                            Console.CursorVisible = true;
+
                             addlog(client);
                             break;
                         case "4":
+                            Console.CursorVisible = true;
+
                             deleteLog(client);
                             break;
                         case "x":
+                            Console.CursorVisible = true;
+
                             Environment.Exit(0);
                             break;
                     }
