@@ -14,7 +14,7 @@ namespace RestCSharp
 
         static void login(ClimbingClient client)
         {
-            Console.Write("Log in ");
+            Console.Write("Log in \n\n");
             Console.CursorVisible = true;
             Console.Write("Username:");
             string username = Console.ReadLine();
@@ -26,7 +26,7 @@ namespace RestCSharp
 
         static void register(ClimbingClient client)
         {
-            Console.Write("Register");
+            Console.Write("Register\n\n");
             Console.CursorVisible = true;
             Console.Write("Full name: ");
             string fullname = Console.ReadLine();
@@ -38,9 +38,9 @@ namespace RestCSharp
             Console.WriteLine("Register successful");
         }
 
-        static async Task getRoutes(ClimbingClient client)
+        static async Task getLoggs(ClimbingClient client)
         {
-            var routes = await client.getRoutes();
+            var routes = await client.getClimbingLoggs();
             if (routes.Count == 0)
             {
                 Console.WriteLine("There is no loggs to get");
@@ -49,11 +49,49 @@ namespace RestCSharp
             {
                 foreach (ClimbingRoute route in routes)
                 {
-                    Console.WriteLine($"Route name: {route.name}");
+                    Console.WriteLine($"Route name: {route.name}\n");
+                    Console.WriteLine($"Route grade: {route.grade}\n");
+                    Console.WriteLine($"Route location: {route.location}\n");
+                    Console.WriteLine($"Type of route: {route.typeOfRoute}\n");
+                    
+
                 }
             }
 
         }
+        static void addlog(ClimbingClient client)
+        {
+            Console.Write("Add a new logg\n\n");
+            Console.CursorVisible = true;
+            Console.Write("Name of route: ");
+            string name = Console.ReadLine();
+            Console.Write("Grade:");
+            string grade = Console.ReadLine();
+            Console.Write("Indoor or outdoor?: ");
+            string location = Console.ReadLine();
+            Console.Write("Sport, trad or bouldering?: ");
+            string typeOfRoute = Console.ReadLine();
+
+            client.addClimbinglog(grade, name, location, typeOfRoute);
+            Console.WriteLine("Logg is added!");
+        }
+        static void deleteLog(ClimbingClient client)
+        {
+            Console.Write("Choose id of route to delete\n\n");
+            Console.CursorVisible = true;
+            Console.Write("Name of route: ");
+            string name = Console.ReadLine();
+            Console.Write("Grade:");
+            string grade = Console.ReadLine();
+            Console.Write("Indoor or outdoor?: ");
+            string location = Console.ReadLine();
+            Console.Write("Sport, trad or bouldering?: ");
+            string typeOfRoute = Console.ReadLine();
+
+            client.addClimbinglog(grade, name, location, typeOfRoute);
+            Console.WriteLine("Logg is added!");
+        }
+
 
         static void Main(string[] args)
         {
@@ -61,12 +99,11 @@ namespace RestCSharp
             while (true)
             {
                 Console.WriteLine("MyLog\n\n");
-
                 Console.WriteLine("1. Log in\n");
                 Console.WriteLine("2. Register a new user\n");
                 Console.WriteLine("3. Get climbing loggs\n");
                 Console.WriteLine("4. Add a new climbing log\n");
-
+                Console.WriteLine("5. Delete climbing log\n");
                 Console.WriteLine("X. Avsluta\n");
 
                 string inp = Console.ReadLine().ToLower();
@@ -80,16 +117,18 @@ namespace RestCSharp
                         register(client);
                         break;
                     case "3":
-                        getRoutes(client).Wait();
+                        getLoggs(client).Wait();
                         break;
                     case "4":
-                        getRoutes(client).Wait();
+                        addlog(client);
+                        break;
+                    case "5":
+                        deleteLog(client);
                         break;
                     case "x":
                         Environment.Exit(0);
                         break;
                 }
-
             }
         }
     }
