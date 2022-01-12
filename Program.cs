@@ -11,6 +11,10 @@ namespace RestCSharp
 {
     public class Program
     {
+        static Boolean isLoggedIn(ClimbingClient client)
+        {
+            return client.CheckIfUserIsLoggedIn();
+        }
 
         static void login(ClimbingClient client)
         {
@@ -93,41 +97,66 @@ namespace RestCSharp
             var client = new ClimbingClient();
             while (true)
             {
-                Console.WriteLine("MyLog\n\n");
-                Console.WriteLine("1. Log in\n");
-                Console.WriteLine("2. Register a new user\n");
-                Console.WriteLine("3. Get climbing loggs\n");
-                Console.WriteLine("4. Add a new climbing log\n");
-                Console.WriteLine("5. Delete climbing log\n");
-                Console.WriteLine("X. Avsluta\n");
+                var result = isLoggedIn(client);
+                Console.WriteLine(result);
 
-                string inp = Console.ReadLine().ToLower();
 
-                switch (inp)
+                if (isLoggedIn(client) == false)
                 {
-                    case "1":
-                        login(client);
-                        break;
-                    case "2":
-                        register(client);
-                        break;
-                    case "3":
-                        getLoggs(client).Wait();
-                        break;
-                    case "4":
-                        addlog(client);
-                        break;
-                    case "5":
-                        deleteLog(client);
-                        break;
-                    case "x":
-                        Environment.Exit(0);
-                        break;
+                    Console.WriteLine("MyLog\n\n");
+                    Console.WriteLine("1. Log in\n");
+                    Console.WriteLine("2. Registrera\n");
+                    Console.WriteLine("X. Avsluta\n");
+                    string inp = Console.ReadLine().ToLower();
+
+                    switch (inp)
+                    {
+                        case "1":
+                            login(client);
+                            break;
+                        case "2":
+                            register(client);
+                            break;
+                        case "x":
+                            Environment.Exit(0);
+                            break;
+                    }
+                }
+                else
+                {
+
+                    Console.WriteLine("MyLog\n\n");
+                    Console.WriteLine("3. Get climbing loggs\n");
+                    Console.WriteLine("4. Add a new climbing log\n");
+                    Console.WriteLine("5. Delete climbing log\n");
+                    Console.WriteLine("X. Avsluta\n");
+
+                    string inp = Console.ReadLine().ToLower();
+
+                    switch (inp)
+                    {
+                        case "1":
+                            Environment.Exit(0);
+                            break;
+                        case "2":
+                            getLoggs(client).Wait();
+                            break;
+                        case "3":
+                            addlog(client);
+                            break;
+                        case "4":
+                            deleteLog(client);
+                            break;
+                        case "x":
+                            Environment.Exit(0);
+                            break;
+                    }
                 }
             }
         }
     }
 }
+
 
 
 

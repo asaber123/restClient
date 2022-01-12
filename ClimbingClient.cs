@@ -56,8 +56,7 @@ namespace RestCSharp
                 Console.WriteLine("User is not logged in");
             }
             var climbingLogRequest = new ClimbingRoute();
-            climbingLogRequest._id = id;
-            HttpResponseMessage climbingLogResponse = await httpClient.DeleteAsync($"api/:{climbingLogRequest}");
+            HttpResponseMessage climbingLogResponse = await httpClient.DeleteAsync($"api/{id}");
             if (!climbingLogResponse.IsSuccessStatusCode)
             {
                 throw new Exception("Failed to delete logg");
@@ -92,6 +91,18 @@ namespace RestCSharp
             registerRequest.userName = username;
             registerRequest.password = password;
             HttpResponseMessage registerResponse = await httpClient.PostAsJsonAsync("auth/signup", registerRequest);
+        }
+        public Boolean CheckIfUserIsLoggedIn()
+        {
+            if (httpClient.DefaultRequestHeaders.Authorization != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
     }
 
