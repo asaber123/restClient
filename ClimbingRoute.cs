@@ -10,6 +10,7 @@ namespace RestCSharp
         public String user { get; set; }
 
         public String date { get; set; }
+        public String _id{get;set;}
 
     }
 }

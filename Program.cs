@@ -53,7 +53,8 @@ namespace RestCSharp
                     Console.WriteLine($"Route grade: {route.grade}\n");
                     Console.WriteLine($"Route location: {route.location}\n");
                     Console.WriteLine($"Type of route: {route.typeOfRoute}\n");
-                    
+                    Console.WriteLine($"Id: {route._id}\n");
+
 
                 }
             }
@@ -77,19 +78,13 @@ namespace RestCSharp
         }
         static void deleteLog(ClimbingClient client)
         {
-            Console.Write("Choose id of route to delete\n\n");
+            Console.Write("Delete log\n\n");
             Console.CursorVisible = true;
-            Console.Write("Name of route: ");
-            string name = Console.ReadLine();
-            Console.Write("Grade:");
-            string grade = Console.ReadLine();
-            Console.Write("Indoor or outdoor?: ");
-            string location = Console.ReadLine();
-            Console.Write("Sport, trad or bouldering?: ");
-            string typeOfRoute = Console.ReadLine();
+            Console.Write("Choose id of route to delete: ");
+            string id = Console.ReadLine();
 
-            client.addClimbinglog(grade, name, location, typeOfRoute);
-            Console.WriteLine("Logg is added!");
+            client.deleteClimbingLog(id);
+            Console.WriteLine("Logg is deleted!");
         }
 
 
