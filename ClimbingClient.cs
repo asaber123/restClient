@@ -65,7 +65,7 @@ namespace RestCSharp
 
 
         }
-        public async void Login(String username, String password)
+        public async Task Login(String username, String password)
         {
             var loginRequest = new LoginRequest();
             loginRequest.userName = username;
@@ -83,6 +83,10 @@ namespace RestCSharp
             {
                 throw new Exception("Failed to login");
             }
+        }
+        public async void logoutUser()
+        {
+            httpClient.DefaultRequestHeaders.Authorization = null;
         }
         public async void Register(String fullname, String username, String password)
         {

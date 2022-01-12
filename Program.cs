@@ -11,12 +11,9 @@ namespace RestCSharp
 {
     public class Program
     {
-        static Boolean isLoggedIn(ClimbingClient client)
-        {
-            return client.CheckIfUserIsLoggedIn();
-        }
 
-        static void login(ClimbingClient client)
+
+        static async Task login(ClimbingClient client)
         {
             Console.Write("Log in \n\n");
             Console.CursorVisible = true;
@@ -24,7 +21,7 @@ namespace RestCSharp
             string username = Console.ReadLine();
             Console.Write("Password: ");
             string password = Console.ReadLine();
-            client.Login(username, password);
+            await client.Login(username, password);
             Console.WriteLine("Login successful");
         }
 
@@ -40,6 +37,15 @@ namespace RestCSharp
             string password = Console.ReadLine();
             client.Register(fullname, username, password);
             Console.WriteLine("Register successful");
+        }
+        static Boolean isLoggedIn(ClimbingClient client)
+        {
+            return client.CheckIfUserIsLoggedIn();
+        }
+        static void logout(ClimbingClient client)
+        {
+            //return client.logoutUser();
+            client.logoutUser();
         }
 
         static async Task getLoggs(ClimbingClient client)
@@ -97,10 +103,6 @@ namespace RestCSharp
             var client = new ClimbingClient();
             while (true)
             {
-                var result = isLoggedIn(client);
-                Console.WriteLine(result);
-
-
                 if (isLoggedIn(client) == false)
                 {
                     Console.WriteLine("MyLog\n\n");
@@ -112,7 +114,7 @@ namespace RestCSharp
                     switch (inp)
                     {
                         case "1":
-                            login(client);
+                            login(client).Wait();
                             break;
                         case "2":
                             register(client);
@@ -126,9 +128,10 @@ namespace RestCSharp
                 {
 
                     Console.WriteLine("MyLog\n\n");
-                    Console.WriteLine("3. Get climbing loggs\n");
-                    Console.WriteLine("4. Add a new climbing log\n");
-                    Console.WriteLine("5. Delete climbing log\n");
+                    Console.WriteLine("1. Log out\n");
+                    Console.WriteLine("2. Get climbing loggs\n");
+                    Console.WriteLine("3. Add a new climbing log\n");
+                    Console.WriteLine("4. Delete climbing log\n");
                     Console.WriteLine("X. Avsluta\n");
 
                     string inp = Console.ReadLine().ToLower();
@@ -136,7 +139,7 @@ namespace RestCSharp
                     switch (inp)
                     {
                         case "1":
-                            Environment.Exit(0);
+                            logout(client);
                             break;
                         case "2":
                             getLoggs(client).Wait();
