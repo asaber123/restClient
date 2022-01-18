@@ -11,12 +11,15 @@ namespace RestCSharp
 {
     public class Program
     {
+        //Making all functions that happens in main when user choose an menu option. 
 
+        //This function sends the request to the class ClimbingClient and returns a boolean (true/false)
         static Boolean isLoggedIn(ClimbingClient client)
         {
             return client.CheckIfUserIsLoggedIn();
         }
 
+        //This is an async function that sends users input to the function "login" in ClimbingClient. 
         static async Task login(ClimbingClient client)
         {
             Console.Write("Log in \n\n");
@@ -28,7 +31,7 @@ namespace RestCSharp
             await client.Login(username, password);
             Console.WriteLine("Login successful");
         }
-
+        //This function takes users input and send it into the function Register in class ClimbingClient. 
         static void register(ClimbingClient client)
         {
             Console.Write("Register\n\n");
@@ -42,12 +45,16 @@ namespace RestCSharp
             client.Register(fullname, username, password);
             Console.WriteLine("Register successful");
         }
+        //This fucnctipn activate the logoutUser fnction in class ClimbingClient
         static void logout(ClimbingClient client)
         {
             //return client.logoutUser();
             client.logoutUser();
         }
 
+        //This is an async fucniton that calls the function getClimbingLoggs and store it into the variable routes. 
+        //Then it checks if there is any routes/loggs to get. If no routes an error message is shown
+        //If  there are routes/loggs then a foreach loop runns through and prints out a message together with the values from the logg. 
         static async Task getLoggs(ClimbingClient client)
         {
             var routes = await client.getClimbingLoggs();
@@ -70,6 +77,8 @@ namespace RestCSharp
             }
 
         }
+        //This function ask user for input and sends the input  into the function "addClimbinglog" i klassen ClimbingClient. 
+        //If user is sucessfully stored, then a message is shown to the user, saying that logg is added. 
         static void addlog(ClimbingClient client)
         {
             Console.Write("Add a new logg\n\n");
@@ -86,6 +95,9 @@ namespace RestCSharp
             client.addClimbinglog(grade, name, location, typeOfRoute);
             Console.WriteLine("Logg is added!");
         }
+        //This fucntion ask user to enter the id of the log that the user want to delete. 
+        //Then it takes the users input and send it into the function "deleteClimbingLog" i klassen ClimbingClient
+        //If climbing log was sucessfully deleted, then the message "logg is deleted" will be shown on the sceen. 
         static void deleteLog(ClimbingClient client)
         {
             Console.Write("Delete log\n\n");
@@ -97,12 +109,16 @@ namespace RestCSharp
             Console.WriteLine("Logg is deleted!");
         }
 
-
+        //This is the main program. 
         static void Main(string[] args)
         {
+            //Making an instance of the class ClimbingClient. 
             var client = new ClimbingClient();
+            //This always runns when nothing else runns. 
             while (true)
             {
+                //Checking if user is logged in through the function "isLoggedIn" which returns true if user is logged in. 
+                //The first menu is shown when user is not logged in. 
                 if (isLoggedIn(client) == false)
                 {
                     Console.WriteLine("MyLog\n\n");
@@ -111,6 +127,7 @@ namespace RestCSharp
                     Console.WriteLine("X. Exit\n");
                     string inp = Console.ReadLine().ToLower();
 
+                    //This switch is checking users input, and depending on the users input different cases will run. 
                     switch (inp)
                     {
                         case "1":
@@ -127,6 +144,7 @@ namespace RestCSharp
                             break;
                     }
                 }
+                //If user is logged in then this menu will be displayed and run instead. 
                 else
                 {
 
@@ -138,7 +156,8 @@ namespace RestCSharp
                     Console.WriteLine("X. Exit\n");
 
                     string inp = Console.ReadLine().ToLower();
-
+                    
+                    //This switch is checking users input, and depending on the users input different cases will run. 
                     switch (inp)
                     {
                         case "1":
